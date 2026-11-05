@@ -1,0 +1,46 @@
+\clearpage
+\setcounter{page}{1}
+\maketitlesupplementary
+
+% [Claude] 2026-11-05: detailed version of "Initialize new basis" (sec/4_method.tex), moved here from the main paper's
+% "Procrustes-informed clone" and "Soft hand-off of coefficients" paragraphs, with their equations and labels (user request).
+\section{Initialization of a New Basis}
+\label{sec:suppl-init}
+This section details how a new basis is initialized when basis $b$ is split (\cref{sec:split-init}); the notation follows the main paper.
+
+\paragraph{Procrustes-informed clone.}
+We want to initialize the new basis to best explain the movers' residual. For every frame
+we solve, over rotations $\mathbf{Q}$ and translations $\mathbf{q}$, the weighted Procrustes problem~\cite{umeyama1991least}
+\begin{equation}
+  (\mathbf{Q}_t, \mathbf{q}_t) = \operatorname*{arg\,min}_{\mathbf{Q},\mathbf{q}}
+  \sum_{\mathcal{G}_b} \omega_g(t)
+  \lVert \mathbf{Q}\boldsymbol{\mu}_g(t) + \mathbf{q} - \tilde{\mathbf{p}}_g(t) \rVert^2 ,
+  \label{eq:procrustes}
+\end{equation}
+with target $\tilde{\mathbf{p}}_g(t) = \boldsymbol{\mu}_g(t) - \bar{\mathbf{r}}_g(t)$, the track shifted by its constant
+offset. We interpolate rotation vectors and translations over frames where the movers are barely visible and set
+$\mathbf{T}^{(K+1)}_{0\to t} = [\mathbf{Q}_t \,|\, \mathbf{q}_t]\, \mathbf{T}^{(b)}_{0\to t}$.
+
+\paragraph{Soft hand-off of coefficients.}
+After the basis transform is decided, we recompute the per-Gaussian weights for each basis. The members of the split basis $b^\star$ share their weights with the clone according to how well each explains them. Let $\delta_g = \varepsilon^{\mathrm{par}}_g - \varepsilon^{\mathrm{cl}}_g$ be the
+difference between the errors of $g$ following the parent alone and the clone alone, and
+$s_g = \delta_g / (\tfrac{1}{2} \operatorname{med}_{\mathcal{M}_{b^\star}} \lvert \delta \rvert)$. For $g \in
+\mathcal{M}_{b^\star}$ we set
+\begin{equation}
+  \begin{aligned}
+  l^{(K+1)}_g &= l^{(b^\star)}_g + \log \sigma(s_g) , \\
+  l^{(b^\star)}_g &\leftarrow l^{(b^\star)}_g + \log \sigma(-s_g) ,
+  \end{aligned}
+  \label{eq:handoff}
+\end{equation}
+with $\sigma$ the logistic function. Since $\sigma(s) + \sigma(-s) = 1$, the total weight of the pair is that of the
+parent before the split; the clone receives the share $\sigma(s_g)$, so a Gaussian explained equally well by both is shared
+evenly instead of being assigned. Gaussians outside $\mathcal{M}_{b^\star}$ receive an inert entry
+close to 0.
+
+% [Claude] 2026-11-05: per-scene tables moved here from the top of sec/4_method.tex (user request).
+\section{Per-Scene Results}
+\label{sec:suppl-per-scene}
+\Cref{tab:full-dycheck,tab:full-nvidia} list the per-scene metrics behind the averages reported in the main paper.
+\input{fig/tab_full_dycheck}
+\input{fig/tab_full_nvidia}

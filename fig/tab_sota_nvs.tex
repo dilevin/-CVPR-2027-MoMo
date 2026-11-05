@@ -1,0 +1,45 @@
+% [Claude] 2026-10-28: placeholder comparison with prior work on novel view synthesis, laid out like MotionScale's table (user
+% screenshot), ours as the last row. Only our own runs (user 2026-10-28): Shape of Motion = our SoM-10 reruns and ours = the candidate
+% default, both the average rows of fig/tab_full_{dycheck,nvidia}.tex (DyCheck: 4 of 5 scenes, block pending). MoSca trained but was not
+% scored, Gaussian Marbles / HiMoR training crashed (missing LPIPS alex.pth), MotionScale not run: TODO.
+% [Claude] 2026-11-05: Ours re-synced with those average rows, which are MoMo (L2 + clustering + 5 % cutoff, user 2026-11-04) since
+% 2026-11-04; this row still held the old MoMo (energy + L1). NVIDIA now includes Umbrella at the rule's B = 6 (Killarney runs).
+% [Claude] 2026-11-04: NVIDIA baselines trained on Killarney (seed 42), scored on Vulcan by one evaluator,
+% scripts/iphone_data_diag/eval_nv.py (SoM's mPSNR / mSSIM / mLPIPS, i.e. our validator's metric code, mask = covisible/2x/val):
+% MoSca (tto_test renders; its own test_covisible masks are byte-identical copies of ours), MotionScale, HiMoR (its own scorer masks by
+% render alpha: 23.31 / 0.749 / 0.105, not used). GM: its exported renders are blank (render half of every image is black), so its own
+% in-pipeline FINAL_VAL masked metrics are used: same covisible/2x/val mask, DyCheck metric definitions (unmasked 22.56 / 0.711 / 0.128
+% not used). Per-scene numbers: tmp/mosca_check/nveval_2131545.out (main checkout); CHANGELOG 2026-11-04.
+% [Claude] 2026-11-05: MoSca re-rendered at the GT val poses WITHOUT its test-time pose optimisation (TTO), like every other method
+% (tmp/mosca_check/mosca_eval_notto.py, job 2137456): 22.80 / 0.716 / 0.118. Its TTO chains each frame's pose from the previous frame's
+% optimised one, so on our static val cameras the poses wandered by up to 4.6 deg (tto_drift.py) -> the old 21.59 / 0.646 / 0.147.
+% [Claude] 2026-11-05: DyCheck scored at full resolution, 720x960 (user decision), by eval_nv.py with flow3d_preprocessed/covisible/1x/val
+% (job 2137519, tmp/mosca_check/dycheckeval_2137519.out; SoM-10 seed 42 there = 16.81, as in the table). HiMoR (fixed cameras): 16.04 /
+% 0.554 / 0.445. MoSca refines its iPhone train cameras (0.3-0.6 deg median, cam_drift_iphone.py), so it is rendered with that per-frame
+% correction carried to the val camera (as MotionScale's validator does; ours and HiMoR keep their cameras fixed, correction = 0):
+% 17.16 / 0.569 / 0.502 (job 2137974, mosca_eval_corr.py; raw given cameras 15.60, its test-time pose optimisation 18.61: not used).
+% NVIDIA check: the corrected renders match the no-TTO ones (Skating 27.53 vs 27.54). MotionScale: block / teddy resuming; GM: reruns
+% with the LPIPS fix pending.
+\begin{table}[t]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{@{}lcccccc@{}}
+    \toprule
+     & \multicolumn{3}{c}{DyCheck NVS} & \multicolumn{3}{c}{NVIDIA NVS} \\
+    \cmidrule(lr){2-4} \cmidrule(l){5-7}
+    Method & PSNR\,$\uparrow$ & SSIM\,$\uparrow$ & LPIPS\,$\downarrow$ & PSNR\,$\uparrow$ & SSIM\,$\uparrow$ & LPIPS\,$\downarrow$ \\
+    \midrule
+    Shape of Motion~\cite{wang2025shape} & 16.81 & 0.638 & 0.389 & 23.40 & 0.749 & 0.100 \\
+    MoSca~\cite{lei2025mosca} & 17.16 & 0.569 & 0.502 & 22.80 & 0.716 & 0.118 \\
+    Gaussian Marbles~\cite{stearns2024dynamic} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & 23.61 & 0.778 & 0.087 \\
+    MotionScale~\cite{zhou2026motionscale} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & 22.20 & 0.678 & 0.155 \\
+    HiMoR~\cite{liang2025himor} & 16.04 & 0.554 & 0.445 & 23.35 & 0.748 & 0.101 \\
+    \midrule
+    Ours & 16.79 & 0.639 & 0.387 & 23.38 & 0.748 & 0.102 \\
+    \bottomrule
+  \end{tabular}}
+  \caption{\ Novel view synthesis on the held-out views of DyCheck (iPhone)~\cite{gao2022dynamic} and NVIDIA Dynamic
+    Scenes~\cite{yoon2020novel}. \textcolor{red}{TODO: missing methods.} All scores are computed on the covisible pixels with the dataset's covisibility masks and the same metric code (masked
+    PSNR, SSIM and LPIPS as in DyCheck)}
+  \label{tab:sota-nvs}
+\end{table}

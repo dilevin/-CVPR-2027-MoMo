@@ -1,0 +1,28 @@
+% [Claude] 2026-10-28: placeholder for the motion-coefficient comparison (user request); grey boxes stand in for the images.
+% [Claude] 2026-11-05 (user requests): apple (seed 44), Balloon1 (seed 43) and teddy (seed 43) at the first training frame (0_00000), spin (seed 42)
+% at training frame 0_00270 (18 s into the 15 fps render). Coefficients = that frame of tests/render_coefs.py's renders (outputs/bdf/modes_vis/
+% {som/<S>/bases_10,split_init/<S>/bases_<B>}[_s<seed>]/videos/epoch_0499/motion_coefs.mp4, right half); input = the dataset's training image,
+% cropped like the render (Balloon1: 458 x 240 of 470 x 248; DyCheck 720 x 960, uncropped).
+\begin{figure}[t]
+  \centering
+  \newcommand{\coefrow}[3]{\rotatebox{90}{\makebox[#2\linewidth][c]{\footnotesize #3}} & \coefimg{coef_#1_input} & \coefimg{coef_#1_som10} &
+    \coefimg{coef_#1_ours} \\}
+  \newcommand{\coefimg}[1]{\includegraphics[width=0.3\linewidth]{img/#1}}
+  \setlength{\tabcolsep}{1pt}
+  \begin{tabular}{@{}c@{\hspace{2pt}}ccc@{}}
+    \coefrow{apple_s44_f0}{0.4}{Apple}
+    \coefrow{Balloon1_s43_f0}{0.157}{Balloon1}
+    \coefrow{teddy_s43_f0}{0.4}{Teddy}
+    \coefrow{spin_s42_f270}{0.4}{Spin}
+     & \makebox[0.3\linewidth][c]{\footnotesize Input} &
+       \makebox[0.3\linewidth][c]{\footnotesize SoM-10} &
+       \makebox[0.3\linewidth][c]{\footnotesize Ours} \\
+  \end{tabular}
+  \caption{\claudetag\ Motion coefficients of Shape of Motion~\cite{wang2025shape} with its default 10 bases and of our method
+    ($B$ from its stopping rule: 5 on apple, 4 on Balloon1, 8 on teddy, 9 on spin), rendered from a training view: the first one for
+    apple (DyCheck, seed 44), Balloon1 (NVIDIA, seed 43) and teddy (DyCheck, seed 43), frame 270 for spin (DyCheck, seed 42). Each
+    foreground Gaussian is coloured by its blending weights: every basis of a model has its own hue, spaced evenly over that model's
+    bases, and mixed weights mix the hues; the background is grey. Hues are not matched between the two methods: what matters is which
+    parts share one colour.}
+  \label{fig:coef-comparison}
+\end{figure}

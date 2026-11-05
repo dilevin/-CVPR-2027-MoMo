@@ -1,0 +1,26 @@
+% [Claude] 2026-10-28: placeholder comparison with prior work on point tracking, laid out like MotionScale's table (user
+% screenshot), ours as the last row. Only our own runs (user 2026-10-28): none of them has been evaluated on point tracking yet.
+\begin{table}[t]
+  \centering
+  \begin{claudeblock}
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{@{}lcccccc@{}}
+    \toprule
+     & \multicolumn{3}{c}{3D point tracking} & \multicolumn{3}{c}{2D point tracking} \\
+    \cmidrule(lr){2-4} \cmidrule(l){5-7}
+    Method & EPE\,$\downarrow$ & $\delta^{.05}_{\mathrm{3D}}\,\uparrow$ & $\delta^{.10}_{\mathrm{3D}}\,\uparrow$ & AJ\,$\uparrow$ & $<\delta_{\mathrm{avg}}\,\uparrow$ & OA\,$\uparrow$ \\
+    \midrule
+    Shape of Motion~\cite{wang2025shape} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    MoSca~\cite{lei2025mosca} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    Gaussian Marbles~\cite{stearns2024dynamic} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    MotionScale~\cite{zhou2026motionscale} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    HiMoR~\cite{liang2025himor} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    \midrule
+    Ours & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    \bottomrule
+  \end{tabular}}
+  \end{claudeblock}
+  \caption{\claudetag\ \claudeadd{3D and 2D point tracking on DyCheck (iPhone)~\cite{gao2022dynamic}, following Shape of Motion's evaluation
+    protocol~\cite{wang2025shape}. Every method trained and evaluated by us. \textcolor{red}{TODO: no method evaluated yet.}}}
+  \label{tab:sota-tracking}
+\end{table}

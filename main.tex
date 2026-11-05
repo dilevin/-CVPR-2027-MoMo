@@ -1,0 +1,80 @@
+% CVPR 2027 Paper Template; see https://github.com/cvpr-org/author-kit
+% [Claude] 2026-10-27: moved to the CVPR 2027 author kit (v1): cvpr.sty, rebuttal.tex and README.md updated; the Paper ID is gone from the template.
+
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+%%%%%%%%% PAPER TYPE  - PLEASE UPDATE FOR FINAL VERSION
+% \usepackage{cvpr}              % To produce the CAMERA-READY version
+\usepackage[review]{cvpr}      % To produce the REVIEW version
+% \usepackage[pagenumbers]{cvpr} % To force page numbers, e.g. for an arXiv version
+
+% Import additional packages in the preamble file, before hyperref
+\input{preamble}
+
+% It is strongly recommended to use hyperref, especially for the review version.
+% hyperref with option pagebackref eases the reviewers' job.
+% Please disable hyperref *only* if you encounter grave issues,
+% e.g. with the file validation for the camera-ready version.
+%
+% If you comment hyperref and then uncomment it, you should delete *.aux before re-running LaTeX.
+% (Or just hit 'q' on the first LaTeX run, let it finish, and you should be clear).
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref,breaklinks,colorlinks,allcolors=cvprblue]{hyperref}
+
+% [Claude] 2026-10-27: the CVPR 2027 template has no Paper ID (removed to avoid leaking IDs); was:
+% %%%%%%%%% PAPER ID  - PLEASE UPDATE
+% \def\paperID{*****} % *** Enter the Paper ID here
+\def\confName{CVPR}
+% [Claude] 2026-10-27: 2026 -> 2027
+\def\confYear{2027}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{\textcolor{pink}{MoMo}: Incremental \textcolor{pink}{Mo}tion \textcolor{pink}{Mo}deling for Monocular 4D Gaussian Reconstruction}
+% Running title of the ECCV version (CVPR has no running head): MoMo: Incremental Motion Modeling
+
+%%%%%%%%% AUTHORS - PLEASE UPDATE
+% The review version prints "Anonymous CVPR submission" instead of this block.
+\author{Yunze Wei \qquad Lily Goli \qquad Alec Jacobson\\
+University of Toronto\\
+{\tt\small lulu.wei@mail.utoronto.ca}
+}
+
+% [cowrite] Claude co-writing markup. Everything the agent inserts or removes is orange until a human accepts it.
+%   \claudeadd{...} inserted text (may hold paragraphs and display math)   \claudedel{...} removed text
+%   \begin{claudeblock}...\end{claudeblock} inserted blocks   \claudenote{...} remark for the author
+%   \needcite{...} \needref{...} \needimage{...} placeholders for missing citations, references and figures
+\usepackage[normalem]{ulem}
+\long\def\claudeadd#1{{\color{orange}#1}}
+\providecommand{\claudedel}[1]{{\color{orange}\sout{#1}}}
+\providecommand{\claudenote}[1]{\textcolor{orange}{\textbf{[Claude: #1]}}}
+\providecommand{\needcite}[1]{\textcolor{orange}{[CITE: #1]}}
+\providecommand{\needref}[1]{\textcolor{orange}{[NEED REF: #1]}}
+\providecommand{\needimage}[1]{\textcolor{orange}{[NEED IMAGE: #1]}}
+\newenvironment{claudeblock}{\par\color{orange}}{\par}
+
+\begin{document}
+\maketitle
+
+% Sections are in sec/; each section inputs its own figures, tables and algorithms from fig/.
+% Commented lines are the parts the workshop version left out.
+\input{sec/0_abstract}
+\input{sec/1_introduction}
+% [Claude] 2026-11-05: sections 2, 3 and 6, the acknowledgements and the supplementary switched back on (user request); were commented out.
+\input{sec/2_related}
+\input{sec/3_analysis}
+\input{sec/4_method}
+\input{sec/5_results}
+\input{sec/6_conclusion}
+\input{sec/7_future}
+% [Claude] 2026-10-27: placeholder for the mandatory LLM usage statement, after the last body section and before the references.
+\section*{LLM Usage Statement}
+%\input{sec/X_acks}   % CVPR: no acknowledgements in the review version
+{
+    \bibliographystyle{ieeenat_fullname}
+    \bibliography{main}
+}
+
+% WARNING: do not forget to delete the supplementary pages from your submission
+\input{sec/X_suppl}
+
+\end{document}

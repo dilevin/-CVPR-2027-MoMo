@@ -1,0 +1,24 @@
+% [Claude] 2026-10-28: placeholder for the memory / speed comparison (user request); same methods and order as fig/tab_sota_nvs.tex,
+% ours as the last row. Every cell TODO.
+\begin{table}[t]
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    Method & Formula & \#Params\,$\downarrow$ & Memory (disk)\,$\downarrow$ & RAM\,$\downarrow$ & NVS inference time\,$\downarrow$ \\
+    \midrule
+    Shape of Motion~\cite{wang2025shape} & $24G + 90T$ & 1.81M & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    MoSca~\cite{lei2025mosca} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    Gaussian Marbles~\cite{stearns2024dynamic} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    MotionScale~\cite{zhou2026motionscale} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    HiMoR~\cite{liang2025himor} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    \midrule
+    Ours & $(14 + B)\,G + 9BT$ & 1.36M & \textcolor{red}{TODO} & \textcolor{red}{TODO} & \textcolor{red}{TODO} \\
+    \bottomrule
+  \end{tabular}}
+  \caption{\claudetag\ Memory and speed of each method: the parameter count of the dynamic foreground as a formula and its value,
+    the size of the trained model on disk, RAM, and the time to render a novel view. $G$: foreground Gaussians (14 parameters each, plus one
+    blending weight per basis); $B$: bases (9 parameters per frame each); $T$: frames. Shape of Motion uses $B = 10$; ours chooses $B$ per
+    scene. Values: average over the DyCheck (iPhone) scenes. \textcolor{red}{TODO: remaining entries; units and measurement setup.}}
+  \label{tab:efficiency}
+\end{table}

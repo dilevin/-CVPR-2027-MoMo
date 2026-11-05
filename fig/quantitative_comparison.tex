@@ -1,0 +1,23 @@
+\begin{table*}[t]
+  \centering
+  \definecolor{rowgray}{gray}{0.9}
+  \setlength{\tabcolsep}{4.5pt}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}lcccccc@{}}
+    \toprule
+    \textbf{Scene}
+      & \shortstack{\textbf{PSNR\,$\uparrow$}\\ \textbf{SoM}} & \shortstack{\textbf{PSNR\,$\uparrow$}\\ \textbf{Ours}}
+      & \shortstack{\textbf{SSIM\,$\uparrow$}\\ \textbf{SoM}} & \shortstack{\textbf{SSIM\,$\uparrow$}\\ \textbf{Ours}}
+      & \shortstack{\textbf{LPIPS\,$\downarrow$}\\ \textbf{SoM}} & \shortstack{\textbf{LPIPS\,$\downarrow$}\\ \textbf{Ours}} \\
+    \midrule
+    \rowcolor{rowgray}
+    apple          & \textbf{11.99} & 11.19          & 0.9890 & \textbf{0.9894} & 0.2299          & \textbf{0.2298} \\
+    paper-windmill & 11.72          & \textbf{12.15} & 0.9723 & \textbf{0.9733} & 0.4471          & \textbf{0.4173} \\
+    \rowcolor{rowgray}
+    teddy          & \textbf{12.56} & 12.33          & 0.7281 & \textbf{0.7297} & \textbf{0.4630} & 0.4842          \\
+    \textbf{Average} & \textbf{12.09} & 11.89        & 0.8965 & \textbf{0.8975} & 0.3800          & \textbf{0.3771} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Quantitative comparison against Shape-of-Motion (SoM)~\cite{wang2025shape} on the Apple, Paper Windmill, and Teddy scenes from the DyCheck dataset. Best result per metric is shown in \textbf{bold}.}
+  \label{tab:quantitative}
+\end{table*}

@@ -1,0 +1,36 @@
+\section{Introduction and Background}
+\label{sec:intro}
+% zoom in quickly on the problem (4D from monocular video is needed (e.g. robotics ~cite jitendra), but underconstrained problem, to solve one SoTA method is SoM where having a few basis motion regularize the solution)
+
+% dig a hole (the problem with SoM type methods: the regularization of motion comes from having a small number of motion basis but we analyze and see more than 5 doesnt help with test views, and therefore having more than 5 just leads to equal usage of all bases while all bases severely overfitting to training views)
+
+% fill the hole (We first extensively analyze this problem over two datasets and show with different number of basis the test PSNR doesnt improve after 5 basis. We then propose a different optimization scheme where we make sure that the first few bases fit the low frequency (major) parts of the motion while the new basis is added only to fit the remaining residual motion. We show quant and qual results on iphone dataset where we improve over SoM by X db in PSNR on the test views.)
+Recovering dynamic 3D scenes matters for downstream applications like learning robotic behavior from human demonstrations~\cite{paliwal2026dexterous}, autonomous driving\cite{}, video content generation\cite{}, and virtual reality~\cite{}.  
+The problem has been initially addressed using NeRF based reconstruction methods\cite{}, and more recently using 3DGS\cite{}and feedforward 4D models. In the multi-view setup, the input data are multiple videos at different camera views. However, in reality, casually captured videos often only have access to a single camera view, leading to the underconstrained monocular reconstruction problem. Many recent methods address the lack of regularization in a single camera view by representing the scene with 3D Gaussians~\cite{kerbl20233d} and optimizing their motion per video using preprocessed depth, camera, flow, and track priors~\cite{lei2025mosca, wang2025shape, stearns2024dynamic, wang2025gflow}. 
+Methods fall into several paradigms such as per-Gaussian motion parameters~\cite{stearns2024dynamic, wang2025gflow}, deformation fields that map canonical Gaussians to each frame~\TODO{Deformable 3dgs yang et all, 4DGS Wu et al}, sparse control points or motion graphs to which the Gaussians are skinned~\cite{huang2024sc, lei2025mosca}, and motion bases shared by all Gaussians~\cite{kratimenos2024dynmf, wang2025shape, liang2025himor}. \TODO{dynMF}
+One widely used idea, popularized by Shape of Motion (SoM)~\cite{wang2025shape}, is to represent the scene with 3D Gaussians and regularize their motion through a small set of shared motion bases.
+A separate line of work trains feedforward models that regress 4D Gaussians directly, without per-video optimization~\cite{lin2026movies}, trading generality for speed.
+
+Despite their success at being able to reconstruct the training video, previous methods show severe overfitting to training views, causing extreme visual distortions in where the novel view camera is far away from the position of the training camera. We find that Shape of Motion's motion bases regularization is only effective with a surprisingly small number. Across the DyCheck \cite{gao2022dynamic}and NVIDIA \cite{yoon2020novel}datasets, test-view quality saturates after roughly three to five bases. Adding more bases does not improve test-view reconstruction; instead, the basis coefficients become increasingly uniform, with each Gaussian relying similarly on many bases to explain its motion, leading to increased overfitting of the training views. This also leads to a large number of redundant parameters that, in fact, hurt novel view synthesis quality.
+
+To solve these problems, we propose MoMo, an incremental optimization scheme for motion modelling, in which the initial bases capture the dominant, low-frequency motion, while additional bases are introduced to explain the remaining residual.
+Our process solely operates on the preprocessing stage of initializing motion bases, providing a more regularized and interpretable bases allocation to model the rigid bodies in a scene. Our contributions are two-fold: 
+
+\begin{itemize}
+\item{We propose MoMo, an incremental motion modelling method that identifies dominant motions of 3D tracks.}
+\item{Our method allows for efficient 4DGS reconstruction that uses fewer parameters compared to other State-of-the-art methods while being better or on par in terms of PSNR and other reconstruction metrics.} 
+\end{itemize}
+
+
+
+
+
+
+% --------- original Lulu's version ------------
+% Reconstruction of dynamic motion from monocular videos has important applications in video understanding, robotics, and virtual reality. 
+% One common approach in recent computer vision has been to represent the scene using 3D Gaussian Splatting (3DGS)~\cite{kerbl20233d}, and modelling the movement of these Gaussians through time~\cite{wang2025shape, wang2025gflow, huang2024sc}.
+% Among these methods, the 3D Gaussian parameters (mean, covariance, color, opacity) are typically defined in a single frame then moved temporally using a per-frame deformation. 
+% The granularity of this deformation ranges drastically, from per Gaussian parameters on the scale of $10^5$~\cite{stearns2024dynamic}, deformation fields with $10^3$ control points~\cite{lei2025mosca}, to compact representing using only around 10 bases trajectories~\cite{wang2025shape, kratimenos2024dynmf}.
+
+% In this paper, we demonstrate that novel view synthesis quality saturated at a surprisingly low number of bases trajectories (2-5), and further additions only improve training views. 
+% To solve this problem, we propose a method for adaptively clustering motion guided by the photometric reconstruction gradient, such that reconstruction quality is increased without harming the coarse rigid body motions in the scene.

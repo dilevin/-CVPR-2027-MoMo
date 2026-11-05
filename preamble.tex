@@ -1,0 +1,103 @@
+%% This file contains a number of tweaks that are typically applied to the main document.
+%% They are not enabled by default, but can be enabled by uncommenting the relevant lines.
+
+
+%%
+%% Official support for 2-column teaser figure
+%%
+\usepackage{cuted} %< for strip environment
+
+%%
+%% For auto-referencing of figures (see fig/teaser.tex and \label{} therein)
+%%
+\usepackage{currfile} %< for \currfilebase macro
+
+%%
+%% caption and (global) spacing overrides
+%%
+\usepackage{caption} %< for "\captionof" commands (teaser)
+% \setlength{\abovecaptionskip}{.5em} % space above caption
+% \setlength{\belowcaptionskip}{1em} % space below caption
+
+%%
+%% Packages used by the paper (graphicx, booktabs, amsmath, xcolor, subcaption are loaded by cvpr.sty)
+%%
+\usepackage{colortbl}      %< \rowcolor in the tables
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%%
+%% Inline annotations; for predefined colors, refer to "dvipsnames" in the xcolor package:
+%% https://tinyurl.com/overleaf-colors
+%%
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\todo}[1]{\textcolor{red}{TODO: #1}}   %< as in the workshop paper
+\newcommand{\TODO}[1]{\textbf{\color{red}[TODO: #1]}}
+\newcommand{\mynote}[1]{\textcolor{blue}{Note: #1}}
+% [Claude] 2026-11-05: per-author tags and a placeholder tag (user request); dvipsnames colours, distinct from the ones above
+\newcommand{\placeholder}[1]{\textcolor{Gray}{[Placeholder: #1]}}
+\newcommand{\lulu}[1]{\textcolor{ForestGreen}{[Lulu: #1]}}
+\newcommand{\lily}[1]{\textcolor{Magenta}{[Lily: #1]}}
+\newcommand{\alec}[1]{\textcolor{Cerulean}{[Alec: #1]}}
+\definecolor{pink}{HTML}{D9786A}                    %< "MoMo" in the title
+
+%%
+%% Content written by Claude (AI assistant). Everything Claude wrote is set in claudecolor and opens with a
+%% "[Claude draft]" tag, so it can be reviewed and rewritten before submission:
+%%   \claude{...}                              inline text written by Claude
+%%   \begin{claudedraft} ... \end{claudedraft}  a block written by Claude (tagged at its start)
+%%   \claudenote{...}                          a note from Claude to the authors (not paper text)
+%%
+\definecolor{claudecolor}{HTML}{6A3D9A}
+\newcommand{\claudetag}{\textsf{\scriptsize[Claude draft]}}
+\newcommand{\claude}[1]{{\color{claudecolor}#1}}
+\newcommand{\claudenote}[1]{{\color{claudecolor}\textsf{\footnotesize[Claude note: #1]}}}
+\newenvironment{claudedraft}{\par\color{claudecolor}\noindent\claudetag\ \ignorespaces}{\par}
+%%
+%% Disable for camera ready / submission by uncommenting these lines:
+%%
+% \renewcommand{\TODO}[1]{}
+% \renewcommand{\todo}[1]{#1}
+% \renewcommand{\lulu}[1]{} \renewcommand{\lily}[1]{} \renewcommand{\alec}[1]{}   % [Claude] 2026-11-05: hide the author tags
+% \renewcommand{\claudenote}[1]{}
+% \renewcommand{\claudetag}{}
+% \definecolor{claudecolor}{HTML}{000000}
+
+%%
+%% Work harder in optimizing text layout. Typically shrinks text by 1/6 of page, enable
+%% it at the very end of the writing process, when you are just above the page limit.
+%%
+% \usepackage{microtype}
+
+%%
+%% Fine-tune paragraph spacing.
+%%
+% \renewcommand{\paragraph}[1]{\vspace{.5em}\noindent\textbf{#1.}}
+
+%%
+%% Globally adjusts space between figure and caption.
+%%
+% \setlength{\abovecaptionskip}{.5em}
+
+%%
+%% Allows "the use of \paper to refer to the project name"
+%% with automatic management of space at the end of the word.
+%%
+% \usepackage{xspace}
+% \newcommand{\paper}{ProjectName\xspace}
+
+%%
+%% Commonly used math definitions.
+%%
+% \DeclareMathOperator*{\argmin}{arg\,min}
+% \DeclareMathOperator*{\argmax}{arg\,max}
+
+%%
+%% Tighten underline.
+%%
+% \usepackage{soul}
+% \setuldepth{foobar}
+
+%%
+%% Reconfigure paragraph (tweaks spacing)
+%%

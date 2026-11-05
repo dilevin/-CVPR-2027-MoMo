@@ -1,0 +1,33 @@
+\section{Related Work}
+
+\lulu{lulu to write}
+
+\label{sec:related-work}
+% [Claude] 2026-11-05: three subsections (user request); the feedforward paragraph moved up under its own heading.
+\subsection{Dynamic Scene Reconstruction}
+Many recent methods address the lack of regularization in a single camera view by representing the scene with 3D Gaussians~\cite{kerbl20233d} and optimizing their motion per video using pretrained depth, camera, flow, and track priors~\cite{lei2025mosca, wang2025shape, stearns2024dynamic, wang2025gflow}.
+
+\subsection{Feedforward Reconstruction}
+A separate line of work trains feedforward models that regress 4D Gaussians directly, without per-video optimization~\cite{lin2026movies}, trading generality for speed.
+
+\subsection{Motion Bases Representation}
+Shape of Motion (SoM)~\cite{wang2025shape} models scene motion with a small set of shared $B$ SE(3) \textit{motion bases} $\mathbf{T}^{(b)}_{0 \to t}$ that varies with time; at time $t$ the center $\mu_t^g$ and rotation $R_t^g$ of Gaussian $g$ is computed as a weighted sum of these bases, relative to a canonical frame $t_0$ chosen as the frame with the most visible tracks. The blending weights $w^{(b)}_g$, which are constant in time, define each Gaussian's association to each basis, and are optimized per-Gaussian alongside the bases themselves. SoM finds $B=10$ bases sufficient, outperforming per-Gaussian SE(3) motion. We show that only a few bases improve novel view synthesis, while more bases help only the training views reconstruction.
+
+
+%------- original version ------
+% \textbf{4D Monocular Reconstruction} 
+% Recent works use 3DGS~\cite{kerbl20233d} for rendering dynamic scenes for its efficiency and quality. 
+% 3D motion from the scene is optimized using supervision pretrained models for depth, camera, and dense track prediction to infer 3D geometry from the limited single 2D view.
+
+% A recent state-of-the-art method, Shape-of-Motion~\cite{wang2025shape}, represents the scene motion as a set of SE(3) \textit{motion bases} $\mathbf{T}^{(b)}_{0 \to t} = \begin{bmatrix} \mathbf{R}^{(b)}_{0 \to t} & \mathbf{t}^{(b)}_{0 \to t} \end{bmatrix}$ that act upon Gaussian mean $\mu_t$ and rotation $\mathbf{R}_t$. 
+% A canonical frame $t_0$ is picked as the frame with the most visible tracks, and the mean and rotation of each Gaussian is obtained using a linear combination of the bases.
+
+% % \begin{equation}
+% %     \mathbf{T}_{0 \to t} = \sum_{b=0}^{B} \mathbf{w}^{(b)} \mathbf{T}_{0 \to t}^{(b)}.
+% %     \label{eq:motion-basis}
+% % \end{equation}
+
+% In the paper,~\cite{wang2025shape} claims that a very small number of bases is enough to reconstruct the scene and uses B=10 bases for all experiments.
+% Furthermore, ablation studies claim that performance degrades when motion is modelled per-Gaussian SE(3) rather than as a linear combination of bases.
+% We provide an analysis and show that only the few bases lead to an improvement in novel view synthesis quality, while further increasing the bases counts only lead to improvement in training but not novel views.
+

@@ -1,0 +1,39 @@
+% [Claude] 2026-10-28: placeholder for the sweep of the cutoff epsilon of the stopping rule (user request). Candidate default
+% (split_init_only45e_l1). [Claude] 2026-10-29: every row = MoMo with the rule at that epsilon, seed 42, last epoch
+% (metrics_imgs.json of outputs/bdf/split_init_only45e_l1_gNN/<scene>/bases_20, NN = 100 x epsilon), mean over the scenes; B = mean
+% chosen_N.txt. iPhone per-scene B: 0.05 6 9 9 6 7 | 0.10 4 5 6 5 5 | 0.20 3 4 4 4 4 (apple teddy spin paper-windmill block).
+% NVIDIA (trained on Killarney, results in outputs/bdf_nvsweep; parity with Vulcan within 0.1 dB) per-scene B, Balloon1 Balloon2
+% Jumping Playground Skating Truck Umbrella-fixed: 0.01 8 11 18 13 9 16 20 | 0.02 6 7 12 8 7 11 10 | 0.05 5 4 9 6 5 4 6 |
+% 0.10 3 4 5 5 4 3 4 | 0.20 2 3 4 4 3 3 3. iPhone 0.01: 19 20 15 11 20 | 0.02: 11 13 12 9 14.
+% [Claude] 2026-10-29 evening: rows 0.001 / 0.005 / 0.50 / 0.75 added (user request; folders g001 / g005 / g50 / g75 = the digits
+% after "0."). iPhone trained on Vulcan (bd-split-rules CHANGELOG); NVIDIA = Killarney step 2c, still TODO. [Claude] 2026-10-30: iPhone
+% filled; per-scene B (apple teddy spin paper-windmill block) 0.001: 20 20 20 20 20 | 0.005: 20 20 20 14 20 | 0.50: 2 2 2 2 2 | 0.75: 2 2 2 2 2.
+\begin{table}[t]
+  \centering
+  \footnotesize
+  % [Claude] 2026-10-28: B, SSIM and LPIPS columns added (user request); \resizebox so that the nine columns fit one column.
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{@{}lcccccccc@{}}
+    \toprule
+     & \multicolumn{2}{c}{$B$} & \multicolumn{2}{c}{PSNR\,$\uparrow$} & \multicolumn{2}{c}{SSIM\,$\uparrow$} & \multicolumn{2}{c}{LPIPS\,$\downarrow$} \\
+    \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7} \cmidrule(l){8-9}
+    $\tau$ & NVIDIA & iPhone & NVIDIA & iPhone & NVIDIA & iPhone & NVIDIA & iPhone \\
+    \midrule
+    0.001 & \textcolor{red}{TODO} & 20.0 & \textcolor{red}{TODO} & 16.80 & \textcolor{red}{TODO} & 0.638 & \textcolor{red}{TODO} & 0.384 \\
+    0.005 & \textcolor{red}{TODO} & 18.8 & \textcolor{red}{TODO} & 16.76 & \textcolor{red}{TODO} & 0.638 & \textcolor{red}{TODO} & 0.385 \\
+    0.01 & 13.6 & 17.0 & 23.44 & 16.78 & 0.750 & 0.637 & 0.098 & 0.384 \\
+    0.02 & 8.7 & 11.8 & 23.39 & 16.72 & 0.748 & 0.637 & 0.100 & 0.386 \\
+    0.05 & 5.6 & 7.4 & 23.37 & 16.75 & 0.747 & 0.638 & 0.101 & 0.386 \\
+    0.10 & 4.0 & 5.0 & 23.37 & 16.86 & 0.747 & 0.639 & 0.102 & 0.387 \\
+    0.20 & 3.1 & 3.8 & 23.32 & 16.84 & 0.745 & 0.639 & 0.104 & 0.385 \\
+    0.50 & \textcolor{red}{TODO} & 2.0 & \textcolor{red}{TODO} & 16.69 & \textcolor{red}{TODO} & 0.638 & \textcolor{red}{TODO} & 0.398 \\
+    0.75 & \textcolor{red}{TODO} & 2.0 & \textcolor{red}{TODO} & 16.67 & \textcolor{red}{TODO} & 0.637 & \textcolor{red}{TODO} & 0.397 \\
+    \bottomrule
+  \end{tabular}}
+  \caption{\claudetag\ Validation PSNR, SSIM and LPIPS of our method and its number of bases $B$ on the held-out views of NVIDIA
+    Dynamic Scenes~\cite{yoon2020novel} and DyCheck (iPhone)~\cite{gao2022dynamic} for several values of the $\tau$ cutoff
+    (\cref{sec:tau}). Covisible pixels, seed 42; every entry, $B$ included, is averaged over the scenes
+    (iPhone: all five, block included). At every $\tau$ our method chooses $B$ itself with the cutoff. $\tau = 0.05$ is the value used in all
+    other experiments.}
+  \label{tab:eps-sweep}
+\end{table}

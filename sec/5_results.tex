@@ -1,0 +1,96 @@
+\section{Results}
+
+\lulu{lulu to write}
+
+\label{sec:Discussion}
+
+\subsection{Implementation Details}
+
+Experiments are ran on L40S GPUs. 
+
+\subsection{Datasets}
+We evaluate our method on the iPhone~\cite{gao2022dynamic} dataset and the Nvidia~\cite{yoon2020novel} dataset. The iPhone dataset consists of 14 casually captured videos, 7 of which contains test camera views. We evaluate on 5 of those 7 views as the remaining two have camera inaccuracies, following \cite{wang2025shape}. The Nvidia dataset contains 7 scenes shot with static cameras of multiple views. \todo{We also show qualitative results from the DAVIS dataset}. 
+\input{fig/synthetic-tracks}
+For the synthetic pinwheel scene, we show tracks obtained from SoM~\cite{wang2025shape} and our method.
+SoM-produced tracks display jitters across the tracks, while our method faithfully recovers the main rotational motion.
+
+% fig/qualitative_comparison.tex is input at the top of sec/4_method.tex (two-column float; from here it would land after the references)
+%We report quantitative and qualitative results on the DyCheck~\cite{gao2022dynamic} dataset, comparing against SoM~\cite{wang2025shape} as our main baseline, using \todo{PSNR, LPIPS, and SSIM} to evaluate image quality.
+% \input{fig/quantitative_comparison}
+% \input{fig/quantitative_comparison_new}
+
+We also provide qualitative results on the DyCheck~\cite{gao2022dynamic} benchmark (Fig.~\ref{fig:qualitative-comparison}. 
+At the same number of bases ($B=20$), our method achieves higher reconstruction quality than SoM, with strong regularization still holding at this basis count, while SoM shows clear overfitting and degraded test-view quality. In the `Paper Windmill' scene specifically, a real video version of our synthetic example, the recovered Gaussian tracks show our method preserving the dominant windmill-rotation motion, while SoM produces per-Gaussian overfitted tracks that fail to capture this coherent motion.
+
+% fig/tab_full_dycheck.tex and fig/tab_full_nvidia.tex are input in the supplementary, sec/X_suppl.tex ([Claude] 2026-11-05, user request)
+% [Claude] 2026-11-05: motion-coefficient comparison moved up from the end of the section, before the line plots (user request).
+\input{fig/coef_comparison}
+\Cref{fig:coef-comparison} compares the motion coefficients of Shape of Motion and our method.
+\todo{discuss once the images exist.}
+
+\input{fig/sweep_iphone_avg}
+% \input{fig/track_error_iphone_avg}   % [Claude] 2026-11-05: Fig. 6 (track error vs. number of bases) removed (user request); the file is kept
+% [Claude] 2026-11-04: inside the pending \claudedel below, \todo{...} became \textcolor{red}{TODO:} + plain text, because \sout cannot break a braced argument and the line ran 107pt into the margin; same words.
+\Cref{tab:full-dycheck,tab:full-nvidia} compare our method (\cref{sec:split-init}) on the full held-out views with SoM~\cite{wang2025shape}
+at its default 10 bases (SoM-10) and with as many bases as ours (SoM-$B$). On DyCheck, with
+8.2 bases on average, ours is level with both in PSNR ($-0.01$\,dB against SoM-$B$, $-0.03$\,dB against SoM-10) and ahead in
+LPIPS ($-0.003$ and $-0.002$) and SSIM. On NVIDIA, with 6.0 bases on average, ours is again level, $+0.01$\,dB against SoM-$B$ and
+$-0.02$\,dB against SoM-10 with an LPIPS 0.002 higher: it is ahead on Truck ($+0.20$\,dB against SoM-10) and Umbrella ($+0.02$\,dB) and
+behind SoM-10 by 0.03--0.12\,dB on the other five scenes. The residual-pattern clustering is what makes the coefficients separate the
+moving parts (one basis per person in Jumping, the toy's legs in teddy); without it (movers = the whole poorly fitted half,
+$\ell_1$ residual) the coefficients blend neighbouring parts, at $+0.07$\,dB PSNR on DyCheck and $+0.02$\,dB on NVIDIA
+(paired over 13 and 20 runs).
+\Cref{fig:sweep-avg} averages the trade-off over the scenes of each
+dataset, on the held-out views (foreground PSNR, seed 42). On DyCheck, SoM peaks at 12.74\,dB at three bases and stays near 12.65\,dB
+from then on (12.63\,dB at ten); ours, at 8.2 bases on average, scores 12.64\,dB, level with SoM given each scene's number of bases
+(12.64\,dB) and with SoM-10. On NVIDIA, SoM rises to 20.2--20.4\,dB from four bases on (20.32\,dB at ten); ours, at 6.0 bases on
+average, scores 20.42\,dB, above SoM given each scene's number of bases (20.19\,dB) and SoM-10.
+\input{fig/avg_blending_weight_real}
+\Cref{fig:avg-weight-real} shows the average blending weight of each basis on the real scenes. Ours concentrates the weight on
+few bases: with the bases sorted by weight, its strongest basis carries 0.37 of the weight on both datasets, against 0.19 (NVIDIA) and
+0.18 (DyCheck) for SoM-10, and its three strongest carry 0.79 and 0.68 against 0.48 and 0.45.
+We compare the two initializations on the 3D tracks alone, % [Claude] 2026-11-05: the struck reference was \Cref, written as Fig.~\ref because \sout cannot process \cref
+ with MoMo choosing its number of bases by the
+$\tau = 0.05$ cutoff (6, 9, 9, 6 and 7 bases on apple, teddy, spin, paper-windmill and block; 7.4 on average). MoMo's initialization does
+not fit the tracks more tightly than SoM's: at the same number of bases its masked $\ell_1$ track error is 13\,\% higher on
+average and higher on every scene. Trained with these $B$ (seed 42), MoMo reaches 16.75\,dB PSNR on the held-out views on average, 0.08\,dB below SoM
+given the same $B$ and 0.06\,dB below SoM-10, with a slightly lower LPIPS (0.386 against 0.388 and 0.390); the gap is
+within the seed spread and comes mostly from spin. On NVIDIA the $\tau$ cutoff chooses 5.6 bases on average (5, 4, 9, 6, 5, 4 and 6 on
+Balloon1, Balloon2, Jumping, Playground, Skating, Truck and Umbrella); the initialization's track error is again higher than
+SoM's at the same $B$ (by 14\,\% on average and on every scene), yet after training MoMo is 0.11\,dB above SoM given the same
+$B$ (23.37 against 23.26\,dB) and 0.03\,dB below SoM-10 (23.40\,dB), with LPIPS 0.101 against 0.102 and 0.100.
+\Cref{tab:full-dycheck,tab:full-nvidia} use, for each scene, the $B$ the $\tau = 0.05$ cutoff picks with the current initialization (seed 42).
+
+% [Claude] 2026-10-28: comparison with prior work, placeholder (user request); table in fig/tab_sota_nvs.tex.
+\input{fig/tab_sota_nvs}
+\Cref{tab:sota-nvs} compares our method with prior monocular dynamic reconstruction methods on novel view synthesis.
+\todo{discuss once the missing entries are in.}
+
+% [Claude] 2026-10-28: memory / speed placeholder (user request); table in fig/tab_efficiency.tex.
+\input{fig/tab_efficiency}
+Our method finds the optimally efficient number of motion bases tailored to each scene, leading to a reduction in the number of parameters. In addition to the standard Gaussian parameters (3 for the center, 4 for the rotation quaternion, 3 for the scale, 1 for the opacity and 3 for the color, 14 in total), each Gaussian stores $B$ time-invariant basis coefficients. Each motion basis stores 6 rotation and 3 translation parameters per frame. Thus, in total, MoMo requires $G \times (14 + B) + B \times T \times 9$ parameters to represent a scene, where $G$ is the number of foreground Gaussians only, and $G \gg T \gg B$. Naively training a static 3DGS scene per frame would require $G \times T \times 14$ parameters. Our method reduces the number of parameters compared to SoM~\cite{wang2025shape} by reducing $B$. On the dynamic part of the scene, our method on average stores 1.36M parameters on the iPhone dataset while SoM-10 stores 1.81M, which is a 25\% reduction in the number of parameters. \Cref{tab:efficiency} presents the memory cost and parameter count of other methods. \lulu{25\% is from us having fewer Gaussians too, purely from formula should be 11\%}% [Claude] 2026-11-05: escaped the two % signs; an unescaped % comments out the rest of the line, closing brace included
+
+
+
+% [Claude] 2026-10-28: cutoff sweep placeholder (user request); the table is in fig/tab_eps_sweep.tex.
+\input{fig/tab_eps_sweep}
+\Cref{tab:eps-sweep} varies the $\tau$ cutoff (\cref{sec:tau}): the basis growth ends once an added basis lowers the weighted 3D track error by less than a fraction $\tau$.
+On DyCheck a looser cutoff stops earlier and renders slightly better: $\tau = 0.10$ ($B = 5.0$) and $0.20$ ($B = 3.8$) are 0.11 and 0.09\,dB above $\tau = 0.05$ ($B = 7.4$), mostly from spin and apple, while block loses 0.14--0.20\,dB; SSIM and LPIPS change by at most 0.002. Tighter cutoffs do not help either: $\tau = 0.02$ ($B = 11.8$) and $0.01$ ($B = 17.0$) score 16.72 and 16.78\,dB, so on DyCheck PSNR is not monotone in $B$.
+On NVIDIA the trend reverses but stays as small: a tighter cutoff grows more bases and scores slightly higher, from 23.32\,dB at $\tau = 0.20$ ($B = 3.1$) to 23.44\,dB at $\tau = 0.01$ ($B = 13.6$), with $\tau = 0.05$ at 23.37\,dB ($B = 5.6$). Across the cutoffs the held-out PSNR moves by at most 0.14\,dB on either dataset while the mean $B$ changes more than fourfold, so the method is not sensitive to $\tau$; $\tau = 0.05$ sits between the two datasets' preferences.
+\claudenote{Every row of \cref{tab:eps-sweep}, 0.05 included, lets the $\tau$ cutoff choose $B$ (seed 42). According to the table's source comment, these runs (\texttt{split\_init\_only45e\_l1\_gNN}) use the previous initialization (no residual-pattern clustering, $\ell_1$ residual), while \cref{tab:full-dycheck,tab:full-nvidia} use the current one over three seeds, so the 0.05 row is not their average row and the sweep would need rerunning with the current initialization.}
+
+% [Claude] 2026-11-05: moved up, before \input{fig/sweep_iphone_avg} (user request); the old copy's \input is commented out and its text
+% struck, with \Cref written as Fig.~\ref because \sout cannot process \cref.
+% \input{fig/coef_comparison}
+
+% \input{fig/basis_distribution}
+% Figure~\ref{fig:basis-distribution} shows that the motion bases coefficients trained using our method concentrate around the first basis at initialization, and the remaining bases are mostly used for local correction.
+% In comparison, Shape-of-Motion~\cite{wang2025shape}'s coefficients are uniformly distributed among all bases.
+
+% Our method solves the issue of object deformations that Shape-of-Motion exhibits.
+% Our method shows a much closer alignment with the ground truth global orientation of the object.
+% This is because our method emphasizes the global object orientation and position, as shown in the motion bases coefficients analysis in Fig.~\ref{fig:basis-distribution}.
+
+% Figure~\ref{fig:qualitative-comparison} presents qualitative results on the Apple, Paper Windmill, and Teddy scenes, comparing our rendered novel views and estimated tracks against the ground truth and Shape-of-Motion~\cite{wang2025shape}.
+
+
